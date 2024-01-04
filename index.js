@@ -1,25 +1,129 @@
 const { Telegraf } = require('telegraf');
 const request = require("request");
 const google = require('./tts.js');
+const fs = require('node:fs');
+const axios = require('axios');
 
-const bot = new Telegraf("token")
+const bot = new Telegraf("6755956896:AAHnRSSe64kfN6qC8rjo1uKGda7sFxo9xUA", {
+  polling: {
+    interval: 300,
+    autoStart: true
+  }
+})
+
+const commands = [
+  { command: '/start', description: 'Начать работу с ботом' },
+  { command: '/help', description: 'Получить помощь' },
+  { command: '/about', description: 'Узнать информацию о боте' }
+];
+
+bot.telegram.setMyCommands(commands);
+
+
 bot.telegram.getMe().then((botInfo) => {
   bot.options.username = botInfo.username;
 });
 bot.start((ctx) => ctx.reply('commands...'))
 
 bot.command('help', (ctx) => ctx.replyWithMarkdown(helpResponse));
-bot.on('text', (ctx) => {
-  let soru = ctx.message.text
-  let encodedsoru = encodeURI(soru)
-  request(`https://api.codare.fun/sor/${encodedsoru}`, function(error, response, body) {
-    let json = JSON.parse(body)
-    ctx.reply(json.cevap)
-        ctx.replyWithAudio({url: google(json.cevap)}, {title: 'ih'})
-  })
+bot.on('photo', async ctx => {
+  const photos = ctx?.update?.message?.photo;
+  if(!photos?.length) {
+    ctx.reply('Не удалось найти фото в сообщении');
+    return;
+  }
+
+  console.log(ctx.message);
+
+   try {
+          const photoPath = await bot.telegram.getFileLink(photos.at(-1).file_id, './');
+
+          //TODO: Сохраняет файлы локально
+
+          // const filePath = `./public/${photos.at(-1).file_id}.jpg`;
+          // await axios({url:photoPath, responseType: 'stream'}).then(response => {
+          //       return new Promise((resolve, reject) => {
+          //           response.data.pipe(fs.createWriteStream(filePath))
+          //                       .on('finish', () => resolve())
+          //                       .on('error', e => reject())
+          //               });
+          //           })
 
 
+//TODO: Upload photo
+const fileBytes = await fetch(
+  `https://quickchart.io/watermark?mainImageUrl=${photoPath}&markImageUrl=https%3A%2F%2F1000logos.net%2Fwp-content%2Fuploads%2F2016%2F10%2FBatman-logo.png&markRatio=0.25`
+).then((res) => res.blob())
+console.log(fileBytes);
 
+const myHeaders = new Headers();
+myHeaders.append("accept", "*/*");
+myHeaders.append("accept-language", "ru-RU,ru;q=0.9,en;q=0.8,en-US;q=0.7,kk;q=0.6");
+
+const formdata = new FormData();
+formdata.append("image", fileBytes);
+
+const requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+
+const resultImageUrl = await fetch("https://api.imgbb.com/1/upload?expiration=600&key=8c194b1a662a2bfa94b1f8dea5def933", requestOptions)
+  .then(response => response.json())
+  .then(result => result?.data?.image?.url)
+  .catch(error => console.log('error', error));
+console.log("Result:", resultImageUrl)
+if(!resultImageUrl) {
+  ctx.reply('Не удалось получить изображение');
+  return;
+}
+
+
+//TODO: Send response photo
+console.log(photoPath)
+ctx.replyWithPhoto(resultImageUrl);
+
+  }
+  catch(error) {
+
+      console.log(error);
+
+  }
 })
+
 console.log('start')
+/*
+TODO:
+0. Настроить команды, отображаемые в боте меню (метод bot.telegram.setMyCommands (команды и описание)).
+1. Добавить команду, в ответ на которую будет приходить ссылка для оплата (будут кнопки)
+  1.1. bot.command('payment', реплай виз маркап и посмотреть апи для добавления кнопок в бота в телеграф);
+
+  import { Context, Markup, Scenes, Telegraf } from 'telegraf';
+    const buttons = payments.map((num) => [
+      Markup.button.callback(String(num), `payment${num}`),
+    ]);
+
+ctx.reply('text', {
+        reply_markup: {
+          inline_keyboard: buttons,
+        },})
+
+  1.2. Добавить слушатель нажатия на кнопки с суммой оплаты (bot.action)
+  1.3. Создавать ссылку с нужной суммой для оплаты https://wiki.aaio.io/priem-platezhei/sozdanie-zakaza
+  1.4. Отправлять пользователю ссылку для перехода с текстом "Ссылка для оплаты подписки", ссылкку получаем из 1.3. В invoice_id кидаем id usera tg
+  1.5. Создать node.js -сервер для просушивания событий об успешной оплате https://expressjs.com/ru/starter/installing.html (нужен сервер)
+    1.5.1. Сделать экспресс-джс сервер с динамическим портом
+    1.5.2. Сделать ручку (апи-путь), который будет вызывать оповещалка об оплате. Пост ручка, которая записывает в базу события оплаты
+    1.5.3. Подключить любую джсон дазу из нпма (пополнения) https://www.npmjs.com/package/simple-json-db
+  1.6. Добавить проверку баланса перед запросом в апи изображений (через гет к базе)
+  1.7. В случае недостатка баланса отправлять соответсвующее сообщение
+  1.8. После успешной генерации изображений, списывать у пользователя один коин (сет в базе и -1)
+  1.9. Проверка баланса пользователем (вызываем гет. Дописать команду и вывести ее для ю)
+
+
+
+*/ 
 bot.launch()
+
