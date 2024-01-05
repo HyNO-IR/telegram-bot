@@ -1,7 +1,10 @@
 import { Telegraf } from 'telegraf';
-// const fs = require('node:fs');
-// const axios = require('axios');
+import fs from 'node:fs';
+import axios from 'axios';
+
 import { getMainMenu } from './keyboards.js'
+import { keyboardTreatments } from './keyboards.js';
+import { undressKeyboard } from './keyboards.js'
 
 const commands = [
   { command: '/start', description: 'Начать работу с ботом'},
@@ -18,42 +21,59 @@ const bot = new Telegraf("6755956896:AAHnRSSe64kfN6qC8rjo1uKGda7sFxo9xUA", {
   }
 })
 bot.telegram.setMyDescription(newDescription);
-// bot.start((ctx) => ctx.reply(hell));
+
 
 bot.telegram.setMyCommands(commands);
-
-// bot.start((msg) => {
-//   const chatId = msg.chat.id;
-
-//   const keyboard = {
-//     reply_markup: JSON.stringify({
-//       keyboard: [
-//         [{ text: 'Даня лох'}],
-//         [{ text: 'Даня не лох'}],
-//       ],
-
-//     inline_keyboard: [
-//       [
-//         { text: 'Ссылка 1', url: 'https://google.com' },
-//         { text: 'Ссылка 2', url: 'https://google.com' },
-//       ],
-//     ],
-
-
-
-//       resize_keyboard: true,
-//     }),
-//   };
-
-//   bot.telegram.sendMessage(chatId, 'Выберите опцию:', keyboard);
-// })
 
 
 
 bot.telegram.getMe().then((botInfo) => {
   bot.options.username = botInfo.username;
 });
-bot.start((ctx) => ctx.reply('commands...'))
+bot.start(ctx => {
+  ctx.reply('Привет!', getMainMenu())
+})
+
+bot.hears('⚡ Обработки', ctx => {
+  ctx.reply(`💳 Покупка VIP-обработок
+
+🏝️ VIP-обработки позволят вам получать фотографии от бота без блюра!
+
+💡Также вы получите приоритетную очередь!`, keyboardTreatments())
+})
+
+
+bot.hears('❤️ Раздеть', ctx => {
+  
+  ctx.replyWithPhoto(
+      'https://img2.goodfon.ru/wallpaper/nbig/7/ec/justdoit-dzhastduit-motivaciya.jpg',
+      {
+          caption: `DeepNude Раздеватор 18+
+
+Наша нейросеть единственная раздевает даже в закрытой одежде!
+            
+💡 Просто отправь нужную фотографию!`,
+      }
+  )
+
+})
+
+bot.hears('😎 Профиль', ctx => {
+  const userName = ctx.from.first_name || ctx.from.username || 'Пользователь';
+  ctx.reply(`Привет, ${userName}! Как я могу помочь?`);
+})
+
+// bot.hears('❤️ Раздеть', async (ctx) => {
+//   const imageUrl = 'https://www.shutterstock.com/ru/image-photo/happy-multiracial-female-physicians-looking-each-2256672123'; // Замените на URL вашего изображения
+//   const captionText = 'Текст, который вы хотите отправить вместе с изображением';
+
+//   try {
+//     await ctx.replyWithPhoto({ url: imageUrl }, { caption: captionText });
+//   } catch (error) {
+//     console.error('Ошибка отправки фото:', error);
+//   }
+// });
+
 
 bot.command('help', (ctx) => ctx.replyWithMarkdown(helpResponse));
 bot.on('photo', async ctx => {
