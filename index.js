@@ -1,8 +1,15 @@
-const { Telegraf } = require('telegraf');
-const request = require("request");
-const google = require('./tts.js');
-const fs = require('node:fs');
-const axios = require('axios');
+import { Telegraf } from 'telegraf';
+// const fs = require('node:fs');
+// const axios = require('axios');
+import { getMainMenu } from './keyboards.js'
+
+const commands = [
+  { command: '/start', description: 'Начать работу с ботом'},
+  { command: '/help', description: 'Получить помощь'},
+  { command: '/about', description: 'Узнать информацию о боте'}
+];
+const helloMessage = `🔗 Перед использование обязательно ознакомьтесь с инструкцией! Если возникнут какие-то вопросы вы всегда можете написать нам и мы их обязательно решим!`;
+const newDescription = 'Привет! Этот бот поможет сделать тебе крутой Дипндюдс.';
 
 const bot = new Telegraf("6755956896:AAHnRSSe64kfN6qC8rjo1uKGda7sFxo9xUA", {
   polling: {
@@ -10,14 +17,37 @@ const bot = new Telegraf("6755956896:AAHnRSSe64kfN6qC8rjo1uKGda7sFxo9xUA", {
     autoStart: true
   }
 })
-
-const commands = [
-  { command: '/start', description: 'Начать работу с ботом' },
-  { command: '/help', description: 'Получить помощь' },
-  { command: '/about', description: 'Узнать информацию о боте' }
-];
+bot.telegram.setMyDescription(newDescription);
+// bot.start((ctx) => ctx.reply(hell));
 
 bot.telegram.setMyCommands(commands);
+
+// bot.start((msg) => {
+//   const chatId = msg.chat.id;
+
+//   const keyboard = {
+//     reply_markup: JSON.stringify({
+//       keyboard: [
+//         [{ text: 'Даня лох'}],
+//         [{ text: 'Даня не лох'}],
+//       ],
+
+//     inline_keyboard: [
+//       [
+//         { text: 'Ссылка 1', url: 'https://google.com' },
+//         { text: 'Ссылка 2', url: 'https://google.com' },
+//       ],
+//     ],
+
+
+
+//       resize_keyboard: true,
+//     }),
+//   };
+
+//   bot.telegram.sendMessage(chatId, 'Выберите опцию:', keyboard);
+// })
+
 
 
 bot.telegram.getMe().then((botInfo) => {
@@ -126,4 +156,3 @@ ctx.reply('text', {
 
 */ 
 bot.launch()
-
