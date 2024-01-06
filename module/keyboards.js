@@ -19,7 +19,7 @@ export function keyboardTreatments() {
 }
 
 export function undressKeyboard() {
-    return Markup.inlineKeyboard([
+     return Markup.inlineKeyboard([
         Markup.button.callback("Как раздеть?", "Лайт")
     ])
 }

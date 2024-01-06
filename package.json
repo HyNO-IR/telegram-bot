@@ -1,12 +1,12 @@
 {
-  "name": "TG Bot",
+  "name": "f",
   "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -17,10 +17,12 @@
     "node-telegram-bot-api": "^0.64.0",
     "nodemon": "^3.0.2",
     "request": "^2.88.2",
+    "simple-json-db": "^2.0.0",
     "telegraf": "^4.15.3",
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "@babel/helper-compilation-targets": "^7.23.6"
+    "@babel/helper-compilation-targets": "^7.23.6",
+    "prettier": "^3.0.0-alpha.6"
   }
 }
