@@ -6,11 +6,14 @@ import { keyboardTreatments } from './module/keyboards.js';
 import { undressKeyboard } from './module/keyboards.js';
 import { commands } from './module/commands.js';
 import {helloMessage} from './module/commands.js'
-import {formatedTextTreatments, formatedTextRazdevator, formatedTextProfile} from './module/buttons.js';
+import {formatedTextTreatments, formatedTextRazdevator} from './module/buttons.js';
 import  JSONdb from 'simple-json-db';
+import { balanceFree } from './module/buttons.js';
+import {test} from './module/buttons.js'
 const db = new JSONdb('db.json');
 
-const newDescription = 'Привет! Этот бот поможет сделать тебе крутой Дипндюдс.';
+
+const newDescription = 'Привет! Этот бот поможет сделать тебе крутой DEEPNUDE.';
 
 const bot = new Telegraf("6755956896:AAHnRSSe64kfN6qC8rjo1uKGda7sFxo9xUA", {
   polling: {
@@ -25,8 +28,20 @@ bot.telegram.setMyCommands(commands);
 bot.telegram.getMe().then((botInfo) => {
   bot.options.username = botInfo.username;
 });
+
+
 bot.start(ctx => {
   ctx.replyWithHTML(helloMessage, getMainMenu())
+  let users = db.get("users");
+  users.push({
+    "name": ctx.from.first_name,
+    "lastName": ctx.from.last_name,
+    "IdUser": '@' + ctx.from.username,
+    "IdChat": ctx.chat.id,
+    "balancePaid": 0,
+    "balanceFree": 0
+  });
+  db.set("users", users);
 })
 
 bot.hears('⚡ Обработки', ctx => {
@@ -45,13 +60,18 @@ bot.action('Лайт', async (ctx) => {
 
 bot.hears('😎 Профиль', ctx => {
   const userName = ctx.from.first_name || ctx.from.username || 'Пользователь';
-  ctx.replyWithHTML('👋🏻 ' + userName + formatedTextProfile);
-  
+  let balanceFree1 = db.get("users").find(item => item.IdUser == `@${ctx.from.username}`).balanceFree;
+  let balancePaid1 = db.get("users").find(item => item.IdUser == `@${ctx.from.username}`).balancePaid;
+  ctx.replyWithHTML('👋🏻 ' + userName + test(balanceFree1, balancePaid1));
 })
 
 
-bot.command('help', (ctx) => ctx.replyWithMarkdown(helpResponse));
 bot.on('photo', async ctx => {
+  if(db.get("users").find(item => item.IdUser == `@${ctx.from.username}`).balanceFree == 0 || db.get("users").find(item => item.IdUser == `@${ctx.from.username}`).balancePaid == 0) {
+    ctx.replyWithHTML('У вас закончились попытки');
+  } else {
+    
+  }
   const photos = ctx?.update?.message?.photo;
   if(!photos?.length) {
     ctx.reply('Не удалось найти фото в сообщении');
@@ -116,10 +136,3 @@ ctx.replyWithPhoto(resultImageUrl);
 
 console.log('start')
 bot.launch()
-
-
-
-
-
-
-

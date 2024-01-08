@@ -1,0 +1,19 @@
+{
+    "users": [
+        {
+            "name": "Дмитрий",
+            "lastName": "Абабков",
+            "IdUser": "@DmitryAbabkov",
+            "IdChat": 519052476,
+            "balancePaid": 0,
+            "balanceFree": 0
+        },
+        {
+            "name": "Данил",
+            "IdUser": "@tonyaxell",
+            "IdChat": 1075506604,
+            "balancePaid": 0,
+            "balanceFree": 0
+        }
+    ]
+}
