@@ -1,6 +1,6 @@
 import { Telegraf } from 'telegraf';
 
-export const bot = new Telegraf("6755956896:AAHnRSSe64kfN6qC8rjo1uKGda7sFxo9xUA", {
+export const bot = new Telegraf("6973564712:AAEQeqKCGmmmvxtlYYJpMN8KzOqPqJopw_w", {
     polling: {
       interval: 300,
       autoStart: true

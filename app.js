@@ -19,9 +19,6 @@ bot.telegram.getMe().then((botInfo) => {
   bot.options.username = botInfo.username;
 });
 
-// bot.action('Лайт', async (ctx) => {
-//   await ctx.answerCbQuery("Лайт", 'Закрыть модальное окно', true);
-// });
 
 bot.on('photo', async ctx => {
   if(db.get("users").find(item => item.IdUser == `@${ctx.from.username}`).balanceFree == 0 || db.get("users").find(item => item.IdUser == `@${ctx.from.username}`).balancePaid == 0) {
@@ -32,9 +29,6 @@ bot.on('photo', async ctx => {
       ctx.reply('Не удалось найти фото в сообщении');
       return;
     }
-  
-    console.log(ctx.message);
-  
      try {
             const photoPath = await bot.telegram.getFileLink(photos.at(-1).file_id, './');
   
@@ -48,14 +42,29 @@ bot.on('photo', async ctx => {
                                   .on('error', e => reject())
                           });
                       })
+                    
   
+
 Jimp.read(`${filePath}`)
-.then((image) => {
-  image.blur(20);
-  var file = "./public/new_name." + image.getExtension();
+.then(async (image) => {
+  image.blur(50);
+  let file = `./public/${ctx.from.username}.` + image.getExtension();
   image.write(file);
-  ctx.replyWithPhoto('https://disk.yandex.ru/d/p4N8aaT8XfabWg')
+  await ctx.replyWithPhoto({source: `${file}`});
+
+  fs.unlink(file, (err) => {
+    if (err) throw err;
+    console.log('Файл удален');
+  })
+
+  fs.unlink(filePath, (err) => {
+    if (err) throw err;
+    console.log('Файл удален');
+  })
+
 })
+
+
 
   //TODO: Upload photo
   // const fileBytes = await fetch(

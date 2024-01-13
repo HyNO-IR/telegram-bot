@@ -1,26 +1,14 @@
 {
     "users": [
         {
-            "name": "Max (Рекламу не продаю)",
-            "IdUser": "@inkhgt",
-            "IdChat": 924550634,
-            "balancePaid": 0,
-            "balanceFree": 0
-        },
-        {
             "name": "Дмитрий",
             "lastName": "Абабков",
             "IdUser": "@DmitryAbabkov",
             "IdChat": 519052476,
-            "balancePaid": 1,
-            "balanceFree": 1
-        },
-        {
-            "name": "Данил",
-            "IdUser": "@tonyaxell",
-            "IdChat": 1075506604,
             "balancePaid": 0,
-            "balanceFree": 0
+            "balanceFree": 0,
+            "images": 0,
+            "role": "user"
         }
     ]
 }

@@ -1,6 +1,6 @@
 export const helloMessage = `🔗 <b>Перед использование обязательно ознакомьтесь с <a href="https://teletype.in/@paidpartner/deepnuderinfo">инструкцией</a>!</b> 
 Если возникнут какие-то вопросы вы всегда можете написать <a href="http://t.me/DmitryAbabkov">нам</a> и мы их обязательно решим!`;
-
+import {Markup} from 'telegraf'
 import {bot} from '../config.js';
 import { getMainMenu } from './keyboards.js';
 const db = new JSONdb('db.json');
@@ -33,9 +33,10 @@ bot.hears('/profile', ctx => {
 async function sendMessage(ctx) {
     try {
         await ctx.replyWithHTML(helloMessage, getMainMenu());
-        await ctx.replyWithPhoto('https://img2.goodfon.ru/wallpaper/nbig/7/ec/justdoit-dzhastduit-motivaciya.jpg',
+        await ctx.replyWithPhoto({ source: `./img/hello_photo.jpg` },
         {caption: formatedTextRazdevator, parse_mode: 'HTML', reply_markup: undressKeyboard().reply_markup}
-        )    } catch (error) {
+        )    
+    } catch (error) {
         console.error(error);
     }
 }
@@ -53,11 +54,15 @@ bot.start(async ctx => {
             "IdUser": '@' + ctx.from.username,
             "IdChat": ctx.chat.id,
             "balancePaid": 0,
-            "balanceFree": 0
+            "balanceFree": 0,
+            "images": 0,
+            "role": 'user'
         });
         db.set("users", users);
     }
   } catch (error) {
       console.error(error);
   }
+  
 });
+
