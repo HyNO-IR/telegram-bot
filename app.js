@@ -7,7 +7,8 @@ const db = new JSONdb('db.json');
 import {bot} from './config.js';
 import Jimp from "jimp";
 import posting from './api/post.js';
-import geting from './api/get.js';
+const db1 = new JSONdb('get.json');
+
 
 const newDescription = 'Привет! Этот бот поможет сделать тебе крутой DEEPNUDE.';
 const endedUpTrying = `❌ <b>Похоже, что у вас закончились обработки</b>
@@ -47,10 +48,11 @@ bot.on('photo', async ctx => {
                       })
                       
   // console.log('ID:', posting());
-  await posting().then((response) => {
-    geting(response.data.data.id);
-  })
-
+  // await posting().then((response) => {
+  //   geting(response.data.data.id).then((response) => {
+  //     console.log(response);
+  //   })
+  // })
 
 
 // Jimp.read(`${filePath}`)
