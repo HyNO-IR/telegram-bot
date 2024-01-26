@@ -35,7 +35,9 @@ app.post('/webhook', (req, res) => {
 
   res.status(200).send('OK');
 });
-
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 // Запускаем сервер
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
