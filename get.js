@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 // Роут для обработки уведомлений от Makenude.ai
 app.post('/webhook', (req, res) => {
   const payload = req.body;
-
+  console.log(payload);
   // Проверка, что запрос пришел от Makenude.ai (проверка токена)
   const yourToken = 'D9mVxKH7CxY12dqLWNe8qORtMcST2i3C'; // Замените на ваш реальный токен
   if (payload.token !== yourToken) {
