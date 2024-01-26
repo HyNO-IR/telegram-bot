@@ -5,6 +5,15 @@
             "lastName": "Абабков",
             "IdUser": "@DmitryAbabkov",
             "IdChat": 519052476,
+            "balancePaid": 1,
+            "balanceFree": 1,
+            "images": 0,
+            "role": "user"
+        },
+        {
+            "name": "내가 모두를 얼마나 싫어하는지",
+            "IdUser": "@Kuplenka09",
+            "IdChat": 2101774279,
             "balancePaid": 0,
             "balanceFree": 0,
             "images": 0,

@@ -39,16 +39,16 @@ const textPayment = `🌴 <b>При покупке вы получаете 2 п�
         reply_markup: {
             inline_keyboard: [
                 [
-                    Markup.button.callback("💸 Быстрый платеж (СБП)", "showLight"),
-                    Markup.button.callback("🇷🇺 Перевод (RU)", '130'),
+                    Markup.button.callback("💸 Быстрый платеж (СБП)", ""),
+                    Markup.button.callback("🇷🇺 Перевод (RU)", ''),
                 ],
                 [
-                    Markup.button.callback("🇰🇿 Перевод (KZ)", "showMinimal"),
-                    Markup.button.callback("🥝 QIWI", '189'),
+                    Markup.button.callback("🇰🇿 Перевод (KZ)", ""),
+                    Markup.button.callback("🥝 QIWI", ''),
                 ],
                 [
-                    Markup.button.callback("💰 YouMoney", "showNormal"),
-                    Markup.button.callback("🪙 Crypto", "449 ₽"),
+                    Markup.button.callback("💰 YouMoney", ""),
+                    Markup.button.callback("🪙 Crypto", ""),
                 ],
             ],
         },

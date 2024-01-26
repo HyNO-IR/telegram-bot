@@ -6,6 +6,8 @@ import  JSONdb from 'simple-json-db';
 const db = new JSONdb('db.json');
 import {bot} from './config.js';
 import Jimp from "jimp";
+import posting from './api/post.js';
+import geting from './api/get.js';
 
 const newDescription = 'Привет! Этот бот поможет сделать тебе крутой DEEPNUDE.';
 const endedUpTrying = `❌ <b>Похоже, что у вас закончились обработки</b>
@@ -41,28 +43,50 @@ bot.on('photo', async ctx => {
                                   .on('finish', () => resolve())
                                   .on('error', e => reject())
                           });
+                          
                       })
-                    
+                      
+  // console.log('ID:', posting());
+  await posting().then((response) => {
+    geting(response.data.data.id);
+  })
+
+
+
+// Jimp.read(`${filePath}`)
+// .then(async (image) => {
+//   image.blur(50);
+//   let file = `./public/${ctx.from.username}.` + image.getExtension();
+//   image.write(file);
+//   await ctx.replyWithPhoto({source: `${file}`});
+
+//   fs.unlink(file, (err) => {
+//     if (err) throw err;
+//     console.log('Файл удален');
+//   })
   
 
-Jimp.read(`${filePath}`)
-.then(async (image) => {
-  image.blur(50);
-  let file = `./public/${ctx.from.username}.` + image.getExtension();
-  image.write(file);
-  await ctx.replyWithPhoto({source: `${file}`});
+// })
 
-  fs.unlink(file, (err) => {
-    if (err) throw err;
-    console.log('Файл удален');
+    }
+    catch(error) {
+        console.log(error);
+    }
+  } 
   })
 
-  fs.unlink(filePath, (err) => {
-    if (err) throw err;
-    console.log('Файл удален');
-  })
+console.log('start')
+bot.launch()
 
-})
+
+
+
+
+
+
+
+
+
 
 
 
@@ -101,13 +125,3 @@ Jimp.read(`${filePath}`)
   // ctx.replyWithPhoto(resultImageUrl);
  
   // console.log('resultImageUrl', resultImageUrl)
-    }
-    catch(error) {
-        console.log(error);
-    }
-  } 
-  })
-
-
-console.log('start')
-bot.launch()
