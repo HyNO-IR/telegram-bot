@@ -2,8 +2,10 @@ import express from 'express';
 const app = express()
 const port = 3004;
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 app.use(cors())
+console.log(cors());
 
 // Используйте body-parser для обработки JSON данных
 app.use(bodyParser.json());
