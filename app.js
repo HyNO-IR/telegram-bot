@@ -47,12 +47,7 @@ bot.on('photo', async ctx => {
                           
                       })
                       
-  // console.log('ID:', posting());
-  // await posting().then((response) => {
-  //   geting(response.data.data.id).then((response) => {
-  //     console.log(response);
-  //   })
-  // })
+posting();
 
 
 // Jimp.read(`${filePath}`)

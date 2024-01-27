@@ -1,11 +1,12 @@
 import axios from 'axios';
 import fs from 'node:fs';
 import FormData from 'form-data';
+import getting from './get.js';
 
 export default function posting() {
 // Replace with the actual path to your image and mask files
-const imagePath = './public/AgACAgIAAxkBAAIC92WtdbeqS1gn3RUJV5iHIAVWxNYBAALy2zEb_aBoSaa2zNEYTDntAQADAgADeQADNAQ.jpg';
-const maskPath = './images/mask-example.png';
+const imagePath = './public/AgACAgIAAxkBAAIDJGW0Gvfhvm8Mu74zzmXWvtB8Gh6pAAIz2DEb6ZqgSZ-lGQpGVZ3VAQADAgADeQADNAQ.jpg';
+const maskPath = './images/mask1.png';
 
 // Replace 'your_token' with the actual token from your profile
 const token = 'D9mVxKH7CxY12dqLWNe8qORtMcST2i3C';
@@ -24,11 +25,9 @@ axios.post(url, data)
     .then((response) => {
         if (response.status === 200) {
             console.log("Request was successful.");
-            console.log(response.data);
-
-
+            getting(response.data.data.id);
         } else {
-            console.log(`Request failed with status code ${response.status}.`);
+            console.log(`Request failed with status code .`);
         }
     })
     .catch((error) => {
