@@ -18,6 +18,24 @@
             "balanceFree": 0,
             "images": 0,
             "role": "user"
+        },
+        {
+            "name": "Max (Рекламу не продаю)",
+            "IdUser": "@inkhgt",
+            "IdChat": 924550634,
+            "balancePaid": 1,
+            "balanceFree": 1,
+            "images": 0,
+            "role": "user"
+        },
+        {
+            "name": "Данил",
+            "IdUser": "@tonyaxell",
+            "IdChat": 1075506604,
+            "balancePaid": 1,
+            "balanceFree": 1,
+            "images": 0,
+            "role": "user"
         }
     ]
 }

@@ -1,29 +1,58 @@
 import axios from 'axios';
+import fs from 'node:fs';
 
-export default async function getting(num) {
+
+export default async function getting(num, ctx) {
     const id = num;
     const token = "D9mVxKH7CxY12dqLWNe8qORtMcST2i3C";
-
-setTimeout(() =>{    
+ 
   const url = `https://makenude.ai/api/nude?id=${id}&token=${token}`;
 
-    try {
-        console.log('Sending request...');
-        const response =  axios.get(url);
+  function clear(id) {
+    clearInterval(id)
+  }
 
-        // Ждем 1 минуту (60000 миллисекунд) перед выводом ответа
-            if (response.status === 200) {
-              console.log('Мы закончили');
+  const interval = setInterval(() => {
+    axios.get(url)
+    .then((response) => {
+        if (response.status === 200) {
+            console.log("Request was successful.");
+            console.log(response.data);
+        } else {
+            console.log(`Request failed with status code ${response.status}.`);
+        }
+    })
+    .catch((error) => {
+       const res = error.response.data.data.path;
+      clear(interval);
+      const localImagePath = './result/img.png';
 
-                console.log("Request was successful.");
-                console.log(response.data.success)
-                // console.log(response.data.data.path);
-                // console.log('Мы закончили');
-            } else {
-                console.log(`Request failed with status code .`);
-            }
-    } catch (error) {
-        console.error(error);
-    }}, 60000)
+      axios({
+        method: 'get',
+        url: res,
+        responseType: 'stream', // Указываем, что ожидаем потоковый ответ
+      })
+        .then(response => {
+          // Создаем поток для записи в файл
+          const writer = fs.createWriteStream(localImagePath);
+      
+          // Подключаем поток данных к потоку записи
+          response.data.pipe(writer);
+      
+          // Обработка завершения записи
+          return new Promise((resolve, reject) => {
+            writer.on('finish', resolve);
+            writer.on('error', reject);
+          });
+        })
+        .then(() => {
+          console.log('Image downloaded successfully!');
+          ctx.replyWithPhoto({ source: `./result/img.png`});
+        })
+        .catch(error => {
+          console.error('Error downloading image:', error);
+        });
+        
+    });
+  }, 31000)
 }
-

@@ -53,8 +53,8 @@ bot.start(async ctx => {
             "lastName": ctx.from.last_name,
             "IdUser": '@' + ctx.from.username,
             "IdChat": ctx.chat.id,
-            "balancePaid": 0,
-            "balanceFree": 0,
+            "balancePaid": 1,
+            "balanceFree": 1,
             "images": 0,
             "role": 'user'
         });

@@ -3,10 +3,10 @@ import fs from 'node:fs';
 import FormData from 'form-data';
 import getting from './get.js';
 
-export default function posting() {
+export default function posting(ctx, filePath) {
 // Replace with the actual path to your image and mask files
-const imagePath = './public/AgACAgIAAxkBAAIDJGW0Gvfhvm8Mu74zzmXWvtB8Gh6pAAIz2DEb6ZqgSZ-lGQpGVZ3VAQADAgADeQADNAQ.jpg';
-const maskPath = './images/mask1.png';
+const imagePath = `${filePath}`;
+const maskPath = './images/prod_mask.png';
 
 // Replace 'your_token' with the actual token from your profile
 const token = 'D9mVxKH7CxY12dqLWNe8qORtMcST2i3C';
@@ -25,9 +25,12 @@ axios.post(url, data)
     .then((response) => {
         if (response.status === 200) {
             console.log("Request was successful.");
-            getting(response.data.data.id);
+            console.log(response.data.data.id);
+            ctx.replyWithHTML('⏳<b>Фотография обрабатывается нейросетью</b>')
+            getting(response.data.data.id, ctx);
         } else {
-            console.log(`Request failed with status code .`);
+            console.log(`Request failed with status code.`);
+            console.log('Пидор Пост')
         }
     })
     .catch((error) => {

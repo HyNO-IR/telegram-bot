@@ -46,8 +46,8 @@ bot.on('photo', async ctx => {
                           });
                           
                       })
-                      
-posting();
+                     
+posting(ctx, filePath);
 
 
 // Jimp.read(`${filePath}`)
